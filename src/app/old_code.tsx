@@ -27,7 +27,6 @@ import {
   FaMapMarkerAlt,
 } from "react-icons/fa";
 import { FaArrowUp } from "react-icons/fa";
-import Link from "next/link";
 
 const montserrat = Montserrat({ subsets: ["latin"] });
 
@@ -130,7 +129,7 @@ const mockProducts: Product[] = [
     image:
       "https://images.unsplash.com/photo-1481162854517-d9e353af153d?q=80&w=2064&auto=format&fit=crop",
     price: 24.99,
-    category: "Effects",
+    category: "Party Effects",
     featured: false,
   },
   {
@@ -386,7 +385,7 @@ const productCategories = [
   "Tableware",
   "Decorations",
   "Lighting",
-  "Effects",
+  "Party Effects",
   "Photo Props",
   "Party Favors",
 ];
@@ -448,22 +447,8 @@ export default function Index() {
 
   // ── Scroll-to-top helper ─────────────────────────────────
   const [isVisible, setIsVisible] = useState(false);
-  const [isBannerAfterView, setIsBannerAfterView] = useState(false)
-  const bannerRef = useRef<HTMLDivElement | null>(null);
 
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (bannerRef.current) {
-        const bannerBottom = bannerRef.current.offsetTop + bannerRef.current.offsetHeight;
-        setIsBannerAfterView(window.scrollY > bannerBottom);
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   useEffect(() => {
     const onScroll = () => setIsVisible(window.scrollY > 400); // show after 400 px
@@ -491,7 +476,6 @@ export default function Index() {
   };
 
   const addProductToCart = (product: Product) => {
-    openCart()
     const existingItemIndex = cartItems.findIndex(
       (item) => item.id === product.id && item.type === "product"
     );
@@ -540,7 +524,6 @@ export default function Index() {
   // };
 
   const addServiceToCart = (service: Service) => {
-    openCart()
     // determine which package/type is currently chosen
     const serviceType =
       selectedServiceOptions[service.id] || service.types[0].id;
@@ -791,42 +774,33 @@ export default function Index() {
 
   return (
     <div
-      className={`min-h-screen ${darkMode ? "bg-[#121212]" : "bg-[#FFFBEA]"} ${montserrat.className
-        }`}
+      className={`min-h-screen ${darkMode ? "bg-[#121212]" : "bg-[#FFFBEA]"} ${
+        montserrat.className
+      }`}
     >
-      <style>
-        {`
-          button{
-            cursor:pointer;
-          }
-        `}
-      </style>
       <nav
-        className={`sticky top-0 z-50 shadow-md py-4 transition-colors duration-800 ease-in-out ${isBannerAfterView && darkMode
-          ? 'bg-[#1e1e1e]'
-          : darkMode
-            ? 'bg-transparent'
-            : 'bg-white'
-          }`}
+        className={`sticky top-0 z-50 ${
+          darkMode ? "bg-gray-800" : "bg-white"
+        } shadow-md py-4`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between">
-          <Link href="/">
-            <div className="flex items-center cursor-pointer">
-              <span
-                className={`text-2xl font-bold ${darkMode ? "text-white" : "text-[#264653]"
-                  }`}
-              >
-                Party
-              </span>
-              <span className="text-2xl font-bold text-[#e76f51]">Time</span>
-              <FaGift className="ml-2 text-[#f4a261]" />
-            </div>
-          </Link>
+          <div className="flex items-center cursor-pointer">
+            <span
+              className={`text-2xl font-bold ${
+                darkMode ? "text-white" : "text-[#264653]"
+              }`}
+            >
+              Party
+            </span>
+            <span className="text-2xl font-bold text-[#e76f51]">Time</span>
+            <FaGift className="ml-2 text-[#f4a261]" />
+          </div>
 
           <div className="flex items-center gap-6">
             <button
-              className={`${darkMode ? "text-white" : "text-[#264653]"
-                } hover:text-[#e76f51] transition-colors cursor-pointer`}
+              className={`${
+                darkMode ? "text-white" : "text-[#264653]"
+              } hover:text-[#e76f51] transition-colors cursor-pointer`}
               onClick={toggleDarkMode}
             >
               {darkMode ? (
@@ -843,8 +817,9 @@ export default function Index() {
               whileTap={{ scale: 0.95 }}
             >
               <FaShoppingCart
-                className={`h-6 w-6 ${darkMode ? "text-white" : "text-[#264653]"
-                  }`}
+                className={`h-6 w-6 ${
+                  darkMode ? "text-white" : "text-[#264653]"
+                }`}
               />
               {getTotalItems() > 0 && (
                 <motion.span
@@ -860,11 +835,7 @@ export default function Index() {
         </div>
       </nav>
 
-      <div
-        ref={bannerRef}
-        className="relative z-10 py-28 flex items-center justify-center min-h-[75vh]"
-      >
-        {/* Background image */}
+      <div className="relative z-10 py-20 flex items-center justify-center min-h-[70vh]">
         <div
           className="absolute inset-0 z-0"
           style={{
@@ -872,54 +843,56 @@ export default function Index() {
               "url('https://images.unsplash.com/photo-1556125574-d7f27ec36a06?q=80&w=2070&auto=format&fit=crop')",
             backgroundSize: "cover",
             backgroundPosition: "center",
-            filter: darkMode ? "brightness(0.4)" : "brightness(0.75)",
+            filter: darkMode ? "brightness(0.4)" : "brightness(0.8)",
           }}
         ></div>
-
-        {/* Gradient overlay */}
         <div
-          className={`absolute inset-0 ${darkMode
-            ? "bg-gradient-to-b from-black/80 via-black/60 to-black/90"
-            : "bg-gradient-to-b from-white/90 via-white/70 to-white/100"
-            } z-0`}
+          className={`absolute inset-0 ${
+            darkMode
+              ? "bg-gradient-to-b from-[#121212]/80 via-[#121212]/60 to-[#121212]/100"
+              : "bg-gradient-to-b from-white/80 via-white/60 to-white/100"
+          } z-0`}
         ></div>
 
-        {/* Content */}
-        <div className="relative z-10 text-center max-w-4xl px-4 sm:px-6">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 text-center z-10">
           <motion.div
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7 }}
+            className="max-w-2xl mx-auto"
           >
-            <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight leading-tight mb-6">
-              <span className={darkMode ? "text-white" : "text-[#222222]"}>
+            <h1 className="text-4xl md:text-5xl font-bold mb-6">
+              <span className={`${darkMode ? "text-white" : "text-[#264653]"}`}>
                 Make Your Celebration
-              </span>{" "}
-              <span className={darkMode ? "text-[#f4a261]" : "text-[#e76f51] block"}>
+              </span>
+              <span
+                className={`${
+                  darkMode ? "text-[#e76f51]" : "text-[#e76f51]"
+                } block`}
+              >
                 Unforgettable
               </span>
             </h1>
 
             <p
-              className={`text-lg sm:text-xl font-medium mb-10 leading-relaxed max-w-2xl mx-auto ${darkMode
-                ? "text-gray-300"
-                : "text-gray-700"
-                }`}
+              className={`text-xl ${
+                darkMode ? "text-[#f4a261]" : "text-[#ce4257]"
+              } font-semibold mb-8 leading-relaxed`}
             >
-              From intimate gatherings to extravagant events, we provide everything
-              you need to create the perfect party experience.
+              From intimate gatherings to extravagant events, we provide
+              everything you need to create the perfect party experience.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <motion.button
-                className="flex items-center justify-center gap-2 px-6 py-3 bg-[#e76f51] text-white text-base font-semibold rounded-full shadow hover:bg-[#dc5b3e] transition-colors"
+                className="flex items-center gap-2 px-6 py-3 bg-[#f4a261] text-white font-medium rounded-md shadow-lg hover:bg-[#e76f51] transition-colors mx-auto cursor-pointer"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.3 }}
                 onClick={() => scrollToSection("products")}
                 whileHover={{
                   scale: 1.05,
-                  boxShadow: "0px 6px 15px rgba(231, 111, 81, 0.2)",
+                  boxShadow: "0px 6px 15px rgba(255, 0, 84, 0.4)",
                   transition: { duration: 0.2 },
                 }}
                 whileTap={{ scale: 0.95 }}
@@ -928,14 +901,14 @@ export default function Index() {
               </motion.button>
 
               <motion.button
-                className="flex items-center justify-center gap-2 px-6 py-3 bg-transparent border-2 border-[#e76f51] text-[#e76f51] text-base font-semibold rounded-full transition-colors"
+                className="flex items-center gap-2 px-6 py-3 bg-[#ce4257] text-white font-medium rounded-md shadow-lg hover:bg-rose-700/90 transition-colors mx-auto cursor-pointer"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7 }}
+                transition={{ duration: 0.7, delay: 0.5 }}
                 onClick={() => scrollToSection("services")}
                 whileHover={{
                   scale: 1.05,
-                  boxShadow: "0px 6px 15px rgba(231, 111, 81, 0.2)",
+                  boxShadow: "0px 6px 15px rgba(57, 0, 153, 0.4)",
                   transition: { duration: 0.2 },
                 }}
                 whileTap={{ scale: 0.95 }}
@@ -972,17 +945,16 @@ export default function Index() {
             style={{ textAlign: "center", marginBottom: "3rem" }}
           >
             <h2
-              className={`${darkMode ? "text-white/90" : "text-[#2a2a2a]"} text-3xl md:text-5xl font-semibold leading-tight pb-4`}
+              className={`${
+                darkMode ? "text-white/90" : "text-[#264653]"
+              } text-2xl md:text-4xl font-semibold pb-4`}
             >
-              Party Decorations &amp; Supplies
+              Party Decorations&nbsp;&amp;&nbsp;Supplies
             </h2>
-            <p
-              className={`${darkMode ? "text-gray-400" : "text-[#7f7f7f]"} text-lg md:text-xl font-light`}
-            >
+            <p className={`${darkMode ? "text-gray-300" : "text-gray-700"}`}>
               Everything you need to create a stunning party atmosphere
             </p>
           </motion.div>
-
 
           {/* ───── FIRST VIEW : carousel ───── */}
           {!viewAllProducts ? (
@@ -1004,67 +976,167 @@ export default function Index() {
                     <motion.div
                       key={product.id + index}
                       initial={{ opacity: 0, y: 20 }}
-                      animate={productsInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                      animate={
+                        productsInView
+                          ? { opacity: 1, y: 0 }
+                          : { opacity: 0, y: 20 }
+                      }
                       transition={{ duration: 0.3, delay: 0.08 * index }}
-                      whileHover={{ y: -5, scale: 1.01, transition: { duration: 0.2 } }}
-                      className={`rounded-xl shadow-md transition-all duration-300 
-                      ${darkMode ? "bg-white/5 border border-white/10" : "bg-white border border-gray-200"}`}
+                      whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                      className={`${
+                        darkMode
+                          ? "bg-white/5"
+                          : "bg-gray-50 border-amber-600/20"
+                      } rounded-2xl  border-2 overflow-hidden `}
                     >
-                      {/* image + badge */}
-                      <div className="relative overflow-hidden h-48 rounded-t-xl">
+                      {/* image + featured badge */}
+                      <div style={{ position: "relative" }}>
                         {product.featured && (
-                          <span className="absolute top-3 left-3 z-10 flex items-center gap-1 px-3 py-1 text-xs font-semibold text-white bg-[#e76f51] rounded-full shadow-sm">
-                            <FaStar className="w-3.5 h-3.5" />
+                          <span
+                            style={{
+                              position: "absolute",
+                              top: "1rem",
+                              left: "1rem",
+                              display: "flex",
+                              alignItems: "center",
+                              gap: "0.25rem",
+                              fontSize: "0.75rem",
+                              fontWeight: 600,
+                              padding: "0.25rem 0.625rem",
+                              borderRadius: "9999px",
+                              backgroundColor: "#e76f51",
+                              color: "#ffffff",
+                              boxShadow: "0 2px 4px rgba(0,0,0,0.15)",
+                              zIndex: 10,
+                            }}
+                          >
+                            <FaStar style={{ width: 12, height: 12 }} />{" "}
                             Featured
                           </span>
                         )}
-                        <img
-                          src={product.image}
-                          alt={product.name}
-                          className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
-                        />
+                        <div style={{ height: "12rem", overflow: "hidden" }}>
+                          <img
+                            src={product.image}
+                            alt={product.name}
+                            style={{
+                              width: "100%",
+                              height: "100%",
+                              objectFit: "cover",
+                              transition: "transform 0.3s",
+                            }}
+                          />
+                        </div>
                       </div>
 
-                      {/* content */}
-                      <div className="p-5">
-                        <div className="flex items-start justify-between mb-3">
-                          <h3 className={`text-lg font-semibold leading-tight line-clamp-2 ${darkMode ? "text-white" : "text-gray-900"}`}>
+                      {/* card content */}
+                      <div style={{ padding: "0.75rem 1.5rem 1.5rem" }}>
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            paddingBottom: "0.75rem",
+                          }}
+                        >
+                          <h3
+                            style={{
+                              fontSize: "1.25rem",
+                              fontWeight: 700,
+                              color: darkMode ? "#ffff" : "#264653",
+                              overflow: "hidden",
+                              display: "-webkit-box",
+                              WebkitLineClamp: 2,
+                              WebkitBoxOrient: "vertical",
+                            }}
+                          >
                             {product.name}
                           </h3>
-                          <span className={`text-xs px-2 py-1 rounded-full ${darkMode ? "bg-purple-900/30 text-white" : "bg-purple-100 text-purple-800"}`}>
+                          <span
+                            className={`${
+                              darkMode
+                                ? "bg-[#F0E6FF]/50 text-white"
+                                : "bg-[#F0E6FF] text-[#264653]"
+                            } text-center text-sm px-2 py-1 rounded-full  `}
+                          >
                             {product.category}
                           </span>
                         </div>
 
-                        <p className={`text-sm mb-4 line-clamp-3 ${darkMode ? "text-orange-300" : "text-gray-600"}`}>
+                        <p
+                          style={{
+                            fontSize: "0.875rem",
+                            color: darkMode ? "#f4a261" : "#4B5563",
+                            marginBottom: "1rem",
+                            height: "5rem",
+                            overflow: "hidden",
+                          }}
+                        >
                           {product.description}
                         </p>
 
-                        <div className="flex items-center justify-between">
-                          <span className={`text-lg font-bold ${darkMode ? "text-white" : "text-[#e76f51]"}`}>
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                          }}
+                        >
+                          <span
+                            style={{
+                              fontSize: "1.25rem",
+                              fontWeight: 600,
+                              color: darkMode ? "#ffff" : "#e76f51",
+                            }}
+                          >
                             ${product.price.toFixed(2)}
                           </span>
 
+                          {/* qty / add-to-cart */}
                           {getItemQuantity(product.id) > 0 ? (
-                            <div className="flex items-center gap-2">
+                            <div
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: "0.5rem",
+                              }}
+                            >
                               <motion.button
                                 onClick={() => removeFromCart(product.id)}
                                 whileHover={{ scale: 1.1 }}
                                 whileTap={{ scale: 0.9 }}
-                                className="p-1 rounded-full bg-[#ce4257] text-white"
+                                style={{
+                                  padding: "0.25rem",
+                                  borderRadius: "9999px",
+                                  backgroundColor: "#ce4257",
+                                  color: "#ffffff",
+                                  cursor: "pointer",
+                                }}
                               >
-                                <FaMinus className="w-3 h-3" />
+                                <FaMinus style={{ width: 12, height: 12 }} />
                               </motion.button>
-                              <span className={`font-semibold ${darkMode ? "text-white" : "text-gray-800"}`}>
+
+                              <span
+                                style={{
+                                  fontWeight: 600,
+                                  color: darkMode ? "#ffff" : "#264653",
+                                }}
+                              >
                                 {getItemQuantity(product.id)}
                               </span>
+
                               <motion.button
                                 onClick={() => addProductToCart(product)}
                                 whileHover={{ scale: 1.1 }}
                                 whileTap={{ scale: 0.9 }}
-                                className="p-1 rounded-full bg-[#f4a261] text-white"
+                                style={{
+                                  padding: "0.25rem",
+                                  borderRadius: "9999px",
+                                  backgroundColor: "#f4a261",
+                                  color: "#ffffff",
+                                  cursor: "pointer",
+                                }}
                               >
-                                <FaPlus className="w-3 h-3" />
+                                <FaPlus style={{ width: 12, height: 12 }} />
                               </motion.button>
                             </div>
                           ) : (
@@ -1072,16 +1144,26 @@ export default function Index() {
                               onClick={() => addProductToCart(product)}
                               whileHover={{ scale: 1.05 }}
                               whileTap={{ scale: 0.95 }}
-                              className="flex items-center gap-1 px-3 py-1.5 text-sm font-medium text-white rounded-md bg-[#f4a261]"
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: "0.25rem",
+                                padding: "0.25rem 0.75rem",
+                                borderRadius: "0.375rem",
+                                backgroundColor: "#f4a261",
+                                color: "#ffffff",
+                                fontSize: "0.875rem",
+                                fontWeight: 500,
+                                cursor: "pointer",
+                              }}
                             >
-                              <FaPlus className="w-3 h-3" />
-                              Add to Cart
+                              <FaPlus style={{ width: 12, height: 12 }} />
+                              Add&nbsp;to&nbsp;Cart
                             </motion.button>
                           )}
                         </div>
                       </div>
                     </motion.div>
-
                   ))}
                 </div>
               </div>
@@ -1095,7 +1177,7 @@ export default function Index() {
                   style={{
                     padding: "0.75rem 1.5rem",
                     borderRadius: "0.375rem",
-                    backgroundColor: "#e76f51",
+                    backgroundColor: "#264653",
                     color: darkMode ? "#ffff" : "#ffffff",
                     fontWeight: 500,
                     cursor: "pointer",
@@ -1113,22 +1195,26 @@ export default function Index() {
 
             <div>
               <div
-                className={`mb-8 p-6 rounded-2xl shadow-md border ${darkMode ? "bg-[#1a1a1a] border-[#264653]" : "bg-[#F5F5F5] border-[#E0E0E0]"
-                  }`}
+                className={`mb-8 p-6 rounded-lg ${
+                  darkMode ? "bg-[#264653]/20" : "bg-gray-100"
+                }`}
               >
                 <div className="flex flex-col md:flex-row gap-4 justify-between mb-6">
                   <div className="relative flex-1">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                       <FaSearch
-                        className={darkMode ? "text-[#F4A261]" : "text-[#e76f51]"}
+                        className={
+                          darkMode ? "text-[#f4a261]" : "text-gray-400"
+                        }
                       />
                     </div>
                     <input
                       type="text"
-                      className={`pl-10 pr-4 py-2 w-full rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#e76f51] transition ${darkMode
-                        ? "bg-[#121212] text-white border-[#264653] placeholder-gray-400"
-                        : "bg-white border-gray-300 text-black"
-                        }`}
+                      className={`pl-10 pr-4 py-2 w-full rounded-md ${
+                        darkMode
+                          ? "bg-[#121212] text-white border-[#264653]"
+                          : "bg-white border-gray-300 text-black"
+                      } border focus:outline-none focus:ring-2 focus:ring-[#e76f51]`}
                       placeholder="Search products..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
@@ -1137,12 +1223,15 @@ export default function Index() {
 
                   <div className="flex gap-4">
                     <select
-                      className={`px-4 py-2 rounded-lg border focus:outline-none focus:ring-2 focus:ring-[#e76f51] transition ${darkMode
-                        ? "bg-[#121212] text-white border-[#264653]"
-                        : "bg-white border-gray-300 text-black"
-                        }`}
+                      className={`px-4 py-2 rounded-md ${
+                        darkMode
+                          ? "bg-[#121212] text-white border-[#264653]"
+                          : "bg-white border-gray-300 text-black"
+                      } border focus:outline-none focus:ring-2 focus:ring-[#e76f51]`}
                       value={selectedProductCategory}
-                      onChange={(e) => setSelectedProductCategory(e.target.value)}
+                      onChange={(e) =>
+                        setSelectedProductCategory(e.target.value)
+                      }
                     >
                       {productCategories.map((category) => (
                         <option key={category} value={category}>
@@ -1152,10 +1241,11 @@ export default function Index() {
                     </select>
 
                     <button
-                      className={`flex items-center gap-2 px-4 py-2 rounded-lg text-white cursor-pointer transition-colors duration-200 ${darkMode
-                        ? "bg-[#e76f51] hover:bg-[#f4a261]"
-                        : "bg-[#e76f51] hover:bg-[#f4a261]"
-                        }`}
+                      className={`flex items-center gap-2 px-4 py-2 ${
+                        darkMode
+                          ? "bg-[#ce4257] hover:bg-[#e76f51]"
+                          : "bg-[#ce4257] hover:bg-[#e76f51]"
+                      } text-white rounded-md cursor-pointer`}
                       onClick={() => setViewAllProducts(false)}
                     >
                       <FaTimes className="h-4 w-4" />
@@ -1165,7 +1255,7 @@ export default function Index() {
                 </div>
 
                 <div className="flex items-center gap-4">
-                  <span className={darkMode ? "text-white" : "text-[#0A0908]"}>
+                  <span className={darkMode ? "text-white" : "text-[#264653]"}>
                     Price Range:
                   </span>
                   <input
@@ -1174,13 +1264,19 @@ export default function Index() {
                     max="100"
                     value={(priceRange[0] / 500) * 100}
                     onChange={(e) =>
-                      setPriceRange([parseInt(e.target.value) * 5, priceRange[1]])
+                      setPriceRange([
+                        parseInt(e.target.value) * 5,
+                        priceRange[1],
+                      ])
                     }
-                    className="flex-1 accent-[#e76f51]"
+                    className="flex-1   accent-[#e76f51]"
                   />
                   <span
-                    className={`min-w-[40px] ${darkMode ? "text-white" : "text-[#0A0908]"
-                      }`}
+                    className={
+                      darkMode
+                        ? "text-white min-w-[40px]"
+                        : "text-[#264653] min-w-[40px]"
+                    }
                   >
                     ${priceRange[0]}
                   </span>
@@ -1191,28 +1287,34 @@ export default function Index() {
                     max="100"
                     value={(priceRange[1] / 500) * 100}
                     onChange={(e) =>
-                      setPriceRange([priceRange[0], parseInt(e.target.value) * 5])
+                      setPriceRange([
+                        priceRange[0],
+                        parseInt(e.target.value) * 5,
+                      ])
                     }
                     className="flex-1 accent-[#e76f51]"
                   />
                   <span
-                    className={`min-w-[40px] ${darkMode ? "text-white" : "text-[#0A0908]"
-                      }`}
+                    className={
+                      darkMode
+                        ? "text-white min-w-[40px]"
+                        : "text-[#264653] min-w-[40px]"
+                    }
                   >
                     ${priceRange[1]}
                   </span>
                 </div>
               </div>
 
-
               <div className="grid grid-cols-1  md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {filteredProducts.map((product, index) => (
                   <motion.div
                     key={product.id + "" + index}
-                    className={`${darkMode
-                      ? "bg-white/5 border-[#264653]/30"
-                      : "bg-white border-gray-200"
-                      } 
+                    className={`${
+                      darkMode
+                        ? "bg-white/5 border-[#264653]/30"
+                        : "bg-white border-gray-200"
+                    } 
                     rounded-xl shadow-md overflow-hidden border hover:shadow-xl transition-all duration-300 ease-in-out`}
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -1246,32 +1348,36 @@ export default function Index() {
                     <div className="p-6">
                       <div className="flex justify-between items-start mb-2">
                         <h3
-                          className={`text-xl font-bold max-w-[14rem] ${darkMode ? "text-white" : "text-[#264653]"
-                            }`}
+                          className={`text-xl font-bold max-w-[14rem] ${
+                            darkMode ? "text-white" : "text-[#264653]"
+                          }`}
                         >
                           {product.name}
                         </h3>
                         <span
-                          className={`text-sm font-medium px-2 py-1 rounded-full ${darkMode
-                            ? "bg-[#264653]/30 text-white"
-                            : "bg-[#F0E6FF] text-[#264653]"
-                            }`}
+                          className={`text-sm font-medium px-2 py-1 rounded-full ${
+                            darkMode
+                              ? "bg-[#264653]/30 text-white"
+                              : "bg-[#F0E6FF] text-[#264653]"
+                          }`}
                         >
                           {product.category}
                         </span>
                       </div>
 
                       <p
-                        className={`text-sm ${darkMode ? "text-[#f4a261]" : "text-gray-600"
-                          } mb-4 h-20 overflow-hidden`}
+                        className={`text-sm ${
+                          darkMode ? "text-[#f4a261]" : "text-gray-600"
+                        } mb-4 h-20 overflow-hidden`}
                       >
                         {product.description}
                       </p>
 
                       <div className="flex justify-between items-center py-auto mt-4">
                         <span
-                          className={`text-xl font-bold ${darkMode ? "text-white/80" : "text-[#e76f51]"
-                            }`}
+                          className={`text-xl font-bold ${
+                            darkMode ? "text-white/80" : "text-[#e76f51]"
+                          }`}
                         >
                           ${product.price.toFixed(2)}
                         </span>
@@ -1289,8 +1395,9 @@ export default function Index() {
                               </motion.button>
 
                               <span
-                                className={`font-medium ${darkMode ? "text-white" : "text-[#264653]"
-                                  }`}
+                                className={`font-medium ${
+                                  darkMode ? "text-white" : "text-[#264653]"
+                                }`}
                               >
                                 {getItemQuantity(product.id)}
                               </span>
@@ -1342,14 +1449,16 @@ export default function Index() {
             className="text-center mb-12"
           >
             <h2
-              className={`text-3xl font-bold ${darkMode ? "text-white" : "text-[#264653]"
-                } mb-4`}
+              className={`text-3xl font-bold ${
+                darkMode ? "text-white" : "text-[#264653]"
+              } mb-4`}
             >
               Professional Party Services
             </h2>
             <p
-              className={`${darkMode ? "text-[#f4a261]" : "text-gray-600"
-                } max-w-2xl mx-auto`}
+              className={`${
+                darkMode ? "text-[#f4a261]" : "text-gray-600"
+              } max-w-2xl mx-auto`}
             >
               Let our expert team handle every aspect of your celebration
             </p>
@@ -1359,11 +1468,12 @@ export default function Index() {
                 <motion.button
                   key={category + "" + index}
                   className={`px-4 py-2 rounded-md text-sm font-medium cursor-pointer
-                    ${selectedServiceCategory === category
-                      ? darkMode
-                        ? "bg-[#e76f51] text-white"
-                        : "bg-[#e76f51] text-white"
-                      : darkMode
+                    ${
+                      selectedServiceCategory === category
+                        ? darkMode
+                          ? "bg-[#e76f51] text-white"
+                          : "bg-[#e76f51] text-white"
+                        : darkMode
                         ? "bg-[#121212] text-white"
                         : "bg-white text-[#264653]"
                     }`}
@@ -1381,11 +1491,12 @@ export default function Index() {
             {filteredServices.map((service, index) => (
               <motion.div
                 key={service.id + "" + index}
-                className={`rounded-2xl overflow-hidden border transition-all duration-300 ease-in-out 
-                ${darkMode
-                    ? "bg-[#1a1a1a] border-[#264653]/30 hover:shadow-[0_8px_24px_rgba(255,255,255,0.08)]"
-                    : "bg-white border-gray-100 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
-                  }`}
+                className={` ${
+                  darkMode
+                    ? "bg-white/7 border-[#264653]/30"
+                    : "bg-white border-gray-200"
+                } 
+                  rounded-xl shadow-lg overflow-hidden border hover:shadow-xl transition-all duration-300 ease-in-out`}
                 initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
                 animate={
                   servicesInView
@@ -1397,86 +1508,107 @@ export default function Index() {
                   delay: 0.1 * index,
                 }}
               >
-                <div className="md:flex h-full">
-                  <div className="md:w-2/5 h-full">
-                    <img
-                      src={service.image}
-                      alt={service.name}
-                      className="w-full h-full object-cover"
-                    />
+                <div className="md:flex">
+                  <div className="md:w-2/5">
+                    <div className="h-full">
+                      <img
+                        src={service.image}
+                        alt={service.name}
+                        className="w-full max-h-95 h-95 object-cover"
+                      />
+                    </div>
                   </div>
-                  <div className="p-6 md:w-3/5 flex flex-col justify-between h-full">
-                    <div>
-                      <div className="flex justify-between items-start mb-4">
-                        <h3
-                          className={`text-2xl font-semibold tracking-tight line-clamp-1 ${darkMode ? "text-white" : "text-[#1f1f1f]"}`}
-                        >
-                          {service.name}
-                        </h3>
-                        <span
-                          className={`text-xs font-semibold px-2 py-1 rounded-full uppercase tracking-wide
-                          ${darkMode
-                              ? "bg-[#f4a261]/20 text-white"
-                              : "bg-[#e5dafc] text-[#264653]"
-                            }`}
-                        >
-                          {service.category}
-                        </span>
-                      </div>
-
-                      <p
-                        className={`text-sm leading-relaxed mb-4 ${darkMode ? "text-[#f4a261]" : "text-gray-600"}`}
+                  <div className="p-6 md:w-3/5">
+                    <div className="flex justify-between items-start mb-3">
+                      <h3
+                        className={`text-xl font-bold line-clamp-1 ${
+                          darkMode ? "text-white" : "text-[#264653]"
+                        }`}
                       >
-                        {service.description}
-                      </p>
+                        {service.name}
+                      </h3>
+                      <span
+                        className={`text-sm font-medium px-2 py-1 rounded-full ${
+                          darkMode
+                            ? "bg-[#264653]/30 text-white"
+                            : "bg-[#F0E6FF] text-[#264653]"
+                        }`}
+                      >
+                        {service.category}
+                      </span>
+                    </div>
 
-                      <div className="mb-5">
-                        <p className={`text-sm font-medium mb-2 ${darkMode ? "text-white" : "text-[#264653]"}`}>
-                          Select Package:
-                        </p>
-                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                          {service.types.map((type) => (
-                            <button
-                              key={type.id}
-                              className={`rounded-lg p-3 text-xs text-left border transition-all
-                              ${selectedServiceOptions[service.id] === type.id
-                                  ? (darkMode
-                                    ? "border-[#2a9d8f] text-white bg-[#2a9d8f]/10 hover:bg-[#2a9d8f]/10"
-                                    : "border-[#2a9d8f] text-[#2a9d8f] bg-[#2a9d8f]/10 hover:bg-[#2a9d8f]/10")
-                                  : (darkMode
-                                    ? "hover:border-[#2a9d8f] text-white hover:bg-[#2a9d8f]/10"
-                                    : "hover:border-[#2a9d8f] hover:bg-[#2a9d8f]/10")
-                                }`}
-                              onClick={() => handleServiceOptionChange(service.id, type.id)}
-                            >
-                              <div className="font-semibold">{type.name}</div>
-                              <div className="mt-1 opacity-80">{type.description}</div>
-                            </button>
-                          ))}
-                        </div>
+                    <p
+                      className={`text-sm ${
+                        darkMode ? "text-[#f4a261]" : "text-gray-600"
+                      } mb-4`}
+                    >
+                      {service.description}
+                    </p>
+
+                    <div className="mb-4">
+                      <p
+                        className={`text-sm font-medium mb-2 ${
+                          darkMode ? "text-white" : "text-[#264653]"
+                        }`}
+                      >
+                        Select Package:
+                      </p>
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                        {service.types.map((type) => (
+                          <button
+                            key={type.id}
+                            className={`p-2 text-xs text-center rounded-md border transition-colors cursor-pointer
+                              ${
+                                selectedServiceOptions[service.id] === type.id
+                                  ? darkMode
+                                    ? "bg-[#ce4257] text-white border-[#e76f51]"
+                                    : "bg-[#ce4257] text-white border-[#e76f51]"
+                                  : darkMode
+                                  ? "border-[#264653] text-white"
+                                  : "border-[#264653] text-[#264653]"
+                              }`}
+                            onClick={() =>
+                              handleServiceOptionChange(service.id, type.id)
+                            }
+                          >
+                            <div className="font-bold">{type.name}</div>
+                            <div className="mt-1">{type.description}</div>
+                          </button>
+                        ))}
                       </div>
                     </div>
 
-                    <div className="flex justify-between items-center pt-4">
-                      <span className={`text-xl font-bold ${darkMode ? "text-white" : "text-[#e76f51]"}`}>
-                        $
-                        {(
-                          service.basePrice *
-                          (service.types.find(
-                            (t) =>
-                              t.id ===
-                              (selectedServiceOptions[service.id] || service.types[0].id)
-                          )?.priceMultiplier || 1)
-                        ).toFixed(2)}
-                      </span>
+                    <div className="flex justify-between pt-6 items-center mt-4">
+                      <div>
+                        <span
+                          className={`text-xl font-semibold ${
+                            darkMode ? "text-white" : "text-[#e76f51]"
+                          }`}
+                        >
+                          $
+                          {(
+                            service.basePrice *
+                            (service.types.find(
+                              (t) =>
+                                t.id ===
+                                (selectedServiceOptions[service.id] ||
+                                  service.types[0].id)
+                            )?.priceMultiplier || 1)
+                          ).toFixed(2)}
+                        </span>
+                      </div>
 
                       <motion.button
                         onClick={() => addServiceToCart(service)}
-                        className="px-4 py-2 bg-[#f4a261] text-white font-medium rounded-md flex items-center gap-2 transition hover:bg-[#e76f51]"
-                        whileHover={{ scale: 1.05 }}
+                        className="px-3 py-1 bg-[#f4a261] text-white rounded-md flex items-center gap-1 cursor-pointer"
+                        whileHover={{
+                          scale: 1.05,
+                          backgroundColor: "#e76f51",
+                        }}
                         whileTap={{ scale: 0.95 }}
                       >
-                        <FaPlus className="h-4 w-4" />
+                        <FaPlus className="h-3 w-3" />
                         Add to Cart
                       </motion.button>
                     </div>
@@ -1484,9 +1616,7 @@ export default function Index() {
                 </div>
               </motion.div>
             ))}
-
           </div>
-
         </div>
       </div>
 
@@ -1503,14 +1633,16 @@ export default function Index() {
             className="text-center mb-12"
           >
             <h2
-              className={`text-3xl font-bold ${darkMode ? "text-white" : " text-[#264653]"
-                } mb-4`}
+              className={`text-3xl font-bold ${
+                darkMode ? "text-white" : " text-[#264653]"
+              } mb-4`}
             >
               What Our Customers Say
             </h2>
             <p
-              className={`${darkMode ? "text-[#f4a261]" : "text-gray-600"
-                } max-w-2xl mx-auto`}
+              className={`${
+                darkMode ? "text-[#f4a261]" : "text-gray-600"
+              } max-w-2xl mx-auto`}
             >
               Read about experiences from our satisfied clients
             </p>
@@ -1527,8 +1659,9 @@ export default function Index() {
                 className="absolute inset-0 flex items-center justify-center"
               >
                 <div
-                  className={`max-w-2xl mx-auto p-8 rounded-xl shadow-lg text-center ${darkMode ? "bg-[#1e1e1e]" : "bg-[#FFF8E7]"
-                    }`}
+                  className={`max-w-2xl mx-auto p-8 rounded-xl shadow-lg text-center ${
+                    darkMode ? "bg-[#264653]/30" : "bg-[#FFF8E7]"
+                  }`}
                 >
                   <div className="mx-auto w-24 h-24 mb-6 rounded-full overflow-hidden border-4 border-[#f4a261]">
                     <img
@@ -1544,25 +1677,26 @@ export default function Index() {
                         key={i}
                         className={
                           i < mockTestimonials[testimonialIndex].rating
-                            ? "text-[#FFD700]" // Gold for filled stars
-                            : "text-gray-300"   // Light gray for empty stars
+                            ? "text-white"
+                            : "text-gray-300"
                         }
                         size={20}
                       />
                     ))}
                   </div>
 
-
                   <p
-                    className={`text-lg italic mb-4 ${darkMode ? "text-white" : "text-gray-700"
-                      }`}
+                    className={`text-lg italic mb-4 ${
+                      darkMode ? "text-white" : "text-gray-700"
+                    }`}
                   >
                     "{mockTestimonials[testimonialIndex].text}"
                   </p>
 
                   <p
-                    className={`font-bold ${darkMode ? "text-white" : "text-[#264653]"
-                      }`}
+                    className={`font-bold ${
+                      darkMode ? "text-white" : "text-[#264653]"
+                    }`}
                   >
                     {mockTestimonials[testimonialIndex].name}
                   </p>
@@ -1575,12 +1709,13 @@ export default function Index() {
                 <button
                   key={index}
                   onClick={() => setTestimonialIndex(index)}
-                  className={`w-2 h-2 rounded-full ${testimonialIndex === index
-                    ? "bg-[#e76f51]"
-                    : darkMode
+                  className={`w-2 h-2 rounded-full ${
+                    testimonialIndex === index
+                      ? "bg-[#e76f51]"
+                      : darkMode
                       ? "bg-white/30"
                       : "bg-gray-300"
-                    }`}
+                  }`}
                 />
               ))}
             </div>
@@ -1589,7 +1724,7 @@ export default function Index() {
       </div>
 
       <footer
-        className={`${darkMode ? "bg-[#1e1e1e] " : "bg-[#1e1e1e] "}  py-12`}
+        className={`${darkMode ? "bg-gray-800 " : "bg-[#264653] "}  py-12`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -1688,29 +1823,41 @@ export default function Index() {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", damping: 20 }}
-              className={`fixed right-0 top-0 bottom-0 w-full sm:w-96 shadow-xl z-60 overflow-hidden flex flex-col 
-                ${darkMode ? "bg-[#1a1a1a]" : "bg-white"}`}
+              className={`fixed right-0 top-0 bottom-0 w-full sm:w-96 ${
+                darkMode ? "bg-[#121212]" : "bg-white"
+              } shadow-xl z-50 overflow-hidden flex flex-col`}
             >
-              {/* Header */}
-              <div className={`p-4 flex justify-between items-center border-b 
-                ${darkMode ? "border-[#333]" : "border-gray-200"}`}>
-                <h2 className={`text-xl font-bold ${darkMode ? "text-white" : "text-[#264653]"}`}>
+              <div className="p-4 border-b border-gray-200 flex justify-between items-center">
+                <h2
+                  className={`text-xl font-bold ${
+                    darkMode ? "text-white" : "text-[#264653]"
+                  }`}
+                >
                   Your Cart
                 </h2>
                 <button
                   onClick={closeCart}
-                  className={`${darkMode ? "text-gray-300" : "text-[#264653]"} hover:text-[#e76f51]`}
+                  className={`${
+                    darkMode ? "text-white" : "text-[#264653]"
+                  } hover:text-[#e76f51] cursor-pointer`}
                 >
                   <FaTimes className="h-5 w-5" />
                 </button>
               </div>
 
-              {/* Cart Items */}
               <div className="flex-1 overflow-y-auto p-4">
                 {cartItems.length === 0 ? (
                   <div className="h-full flex flex-col items-center justify-center">
-                    <FaShoppingCart className={`h-12 w-12 mb-4 ${darkMode ? "text-[#666]" : "text-gray-300"}`} />
-                    <p className={`text-center ${darkMode ? "text-[#f4a261]" : "text-gray-500"}`}>
+                    <FaShoppingCart
+                      className={`h-12 w-12 ${
+                        darkMode ? "text-[#264653]/40" : "text-gray-300"
+                      } mb-4`}
+                    />
+                    <p
+                      className={`${
+                        darkMode ? "text-[#f4a261]" : "text-gray-500"
+                      } text-center`}
+                    >
                       Your cart is empty. Add some party essentials!
                     </p>
                   </div>
@@ -1719,8 +1866,11 @@ export default function Index() {
                     {cartItems.map((item) => (
                       <motion.div
                         key={item.id}
-                        className={`border rounded-lg p-3 flex items-center gap-3 
-                          ${darkMode ? "bg-[#2a2a2a] border-[#3d3d3d]" : "bg-white border-gray-100"}`}
+                        className={`${
+                          darkMode
+                            ? "bg-[#121212]/30 border-[#264653]/20"
+                            : "bg-white border-gray-100"
+                        } border rounded-lg p-3 flex items-center gap-3`}
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -10 }}
@@ -1739,43 +1889,65 @@ export default function Index() {
                           }
                           className="w-16 h-16 object-cover rounded-md"
                         />
+
                         <div className="flex-1">
-                          <h3 className={`font-medium ${darkMode ? "text-white" : "text-[#264653]"}`}>
+                          <h3
+                            className={`font-medium ${
+                              darkMode ? "text-white" : "text-[#264653]"
+                            }`}
+                          >
                             {item.type === "product"
                               ? (item.item as Product).name
                               : (item.item as Service).name}
                           </h3>
 
                           {item.type === "service" && item.selectedType && (
-                            <p className={`text-xs ${darkMode ? "text-[#f4a261]" : "text-gray-500"}`}>
-                              {(item.item as Service).types.find((t) => t.id === item.selectedType)?.name || "Basic"} package
+                            <p
+                              className={`text-xs ${
+                                darkMode ? "text-[#f4a261]" : "text-gray-500"
+                              }`}
+                            >
+                              {(item.item as Service).types.find(
+                                (t) => t.id === item.selectedType
+                              )?.name || "Basic"}{" "}
+                              package
                             </p>
                           )}
 
                           <div className="flex justify-between items-center mt-1">
-                            <span className={`text-sm font-bold ${darkMode ? "text-[#f4a261]" : "text-[#e76f51]"}`}>
+                            <span
+                              className={`text-sm font-bold ${
+                                darkMode ? "text-[#f4a261]" : "text-[#e76f51]"
+                              }`}
+                            >
                               ${(getItemPrice(item) * item.quantity).toFixed(2)}
                             </span>
 
                             <div className="flex items-center gap-2">
                               <motion.button
                                 onClick={() => removeFromCart(item.id)}
-                                className="p-1 rounded-full bg-[#ce4257] text-white"
+                                className="p-1 rounded-full bg-[#ce4257] text-white cursor-pointer"
                                 whileHover={{ scale: 1.1 }}
                                 whileTap={{ scale: 0.9 }}
                               >
                                 <FaMinus className="h-3 w-3" />
                               </motion.button>
-                              <span className={`font-medium ${darkMode ? "text-white" : "text-[#264653]"}`}>
+
+                              <span
+                                className={`font-medium ${
+                                  darkMode ? "text-white" : "text-[#264653]"
+                                }`}
+                              >
                                 {item.quantity}
                               </span>
+
                               <motion.button
                                 onClick={() =>
                                   item.type === "product"
                                     ? addProductToCart(item.item as Product)
                                     : addServiceToCart(item.item as Service)
                                 }
-                                className="p-1 rounded-full bg-[#f4a261] text-white"
+                                className="p-1 rounded-full bg-[#f4a261] text-white cursor-pointer"
                                 whileHover={{ scale: 1.1 }}
                                 whileTap={{ scale: 0.9 }}
                               >
@@ -1790,11 +1962,20 @@ export default function Index() {
                 )}
               </div>
 
-              {/* Footer */}
-              <div className={`p-4 border-t ${darkMode ? "border-[#333]" : "border-gray-200"}`}>
+              <div className="p-4 border-t border-gray-200">
                 <div className="flex justify-between items-center mb-4">
-                  <span className={`font-medium ${darkMode ? "text-white" : "text-[#264653]"}`}>Total:</span>
-                  <span className={`text-xl font-bold ${darkMode ? "text-[#f4a261]" : "text-[#e76f51]"}`}>
+                  <span
+                    className={`font-medium ${
+                      darkMode ? "text-white" : "text-[#264653]"
+                    }`}
+                  >
+                    Total:
+                  </span>
+                  <span
+                    className={`text-xl font-bold ${
+                      darkMode ? "text-[#f4a261]" : "text-[#e76f51]"
+                    }`}
+                  >
                     ${getTotalPrice().toFixed(2)}
                   </span>
                 </div>
@@ -1802,10 +1983,12 @@ export default function Index() {
                 <motion.button
                   onClick={openCheckout}
                   disabled={cartItems.length === 0}
-                  className={`w-full py-3 rounded-lg font-medium text-white 
-                    ${cartItems.length === 0
-                      ? "bg-gray-500 cursor-not-allowed"
-                      : "bg-[#e76f51] hover:bg-[#f4a261] cursor-pointer"}`}
+                  className={`w-full py-3 rounded-lg flex items-center justify-center font-medium text-white 
+                    ${
+                      cartItems.length === 0
+                        ? "bg-gray-400 cursor-not-allowed"
+                        : "bg-[#e76f51] hover:bg-[#f4a261] cursor-pointer"
+                    }`}
                   whileHover={cartItems.length > 0 ? { scale: 1.02 } : {}}
                   whileTap={cartItems.length > 0 ? { scale: 0.98 } : {}}
                 >
@@ -1816,7 +1999,6 @@ export default function Index() {
           </>
         )}
       </AnimatePresence>
-
 
       <AnimatePresence>
         {isCheckoutOpen && (
@@ -1833,32 +2015,35 @@ export default function Index() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
-              className={`fixed inset-0 z-60 overflow-y-auto`}
+              className={`fixed inset-0 z-50 overflow-hidden`}
               onClick={(e) => e.stopPropagation()}
             >
               <div className="flex items-center justify-center min-h-screen p-4">
                 <motion.div
-                  className={`w-full max-w-3xl ${darkMode ? "bg-[#121212]" : "bg-white"
-                    } rounded-xl shadow-xl overflow-hidden relative`}
+                  className={`w-full max-w-3xl ${
+                    darkMode ? "bg-[#121212]" : "bg-white"
+                  } rounded-xl shadow-xl overflow-hidden relative`}
                   onClick={(e) => e.stopPropagation()}
                 >
                   <div className="p-6 border-b border-gray-200 flex justify-between items-center">
                     <h2
-                      className={`text-xl font-bold ${darkMode ? "text-white" : "text-[#264653]"
-                        }`}
+                      className={`text-xl font-bold ${
+                        darkMode ? "text-white" : "text-[#264653]"
+                      }`}
                     >
                       {checkoutStep === 1 && hasServices
                         ? "Event Details"
                         : checkoutStep === 2
-                          ? "Payment Information"
-                          : checkoutStep === 3
-                            ? "Order Complete"
-                            : "Checkout"}
+                        ? "Payment Information"
+                        : checkoutStep === 3
+                        ? "Order Complete"
+                        : "Checkout"}
                     </h2>
                     <button
                       onClick={closeCheckout}
-                      className={`${darkMode ? "text-white" : "text-[#264653]"
-                        } hover:text-[#e76f51] cursor-pointer`}
+                      className={`${
+                        darkMode ? "text-white" : "text-[#264653]"
+                      } hover:text-[#e76f51] cursor-pointer`}
                     >
                       <FaTimes className="h-5 w-5" />
                     </button>
@@ -1879,16 +2064,18 @@ export default function Index() {
                           className="p-6"
                         >
                           <div
-                            className={`mb-8 p-4 rounded-lg ${darkMode ? "bg-[#264653]/20" : "bg-gray-50"
-                              }`}
+                            className={`mb-8 p-4 rounded-lg ${
+                              darkMode ? "bg-[#264653]/20" : "bg-gray-50"
+                            }`}
                           >
                             <div className="space-y-4">
                               <div>
                                 <label
-                                  className={`block text-sm font-medium mb-1 ${darkMode
-                                    ? "text-[#f4a261]"
-                                    : "text-gray-700"
-                                    }`}
+                                  className={`block text-sm font-medium mb-1 ${
+                                    darkMode
+                                      ? "text-[#f4a261]"
+                                      : "text-gray-700"
+                                  }`}
                                 >
                                   Event Date*
                                 </label>
@@ -1904,10 +2091,11 @@ export default function Index() {
                                   </div>
                                   <input
                                     type="date"
-                                    className={`pl-10 pr-4 py-2 w-full rounded-md ${darkMode
-                                      ? "bg-[#121212] text-white border-[#264653]"
-                                      : "bg-white border-gray-300"
-                                      } border focus:outline-none focus:ring-2 focus:ring-[#e76f51]`}
+                                    className={`pl-10 pr-4 py-2 w-full rounded-md ${
+                                      darkMode
+                                        ? "bg-[#121212] text-white border-[#264653]"
+                                        : "bg-white border-gray-300"
+                                    } border focus:outline-none focus:ring-2 focus:ring-[#e76f51]`}
                                     value={eventDetails.date}
                                     onChange={(e) =>
                                       setEventDetails({
@@ -1923,10 +2111,11 @@ export default function Index() {
 
                               <div>
                                 <label
-                                  className={`block text-sm font-medium mb-1 ${darkMode
-                                    ? "text-[#f4a261]"
-                                    : "text-gray-700"
-                                    }`}
+                                  className={`block text-sm font-medium mb-1 ${
+                                    darkMode
+                                      ? "text-[#f4a261]"
+                                      : "text-gray-700"
+                                  }`}
                                 >
                                   Event Time*
                                 </label>
@@ -1942,10 +2131,11 @@ export default function Index() {
                                   </div>
                                   <input
                                     type="time"
-                                    className={`pl-10 pr-4 py-2 w-full rounded-md ${darkMode
-                                      ? "bg-[#121212] text-white border-[#264653]"
-                                      : "bg-white border-gray-300"
-                                      } border focus:outline-none focus:ring-2 focus:ring-[#e76f51]`}
+                                    className={`pl-10 pr-4 py-2 w-full rounded-md ${
+                                      darkMode
+                                        ? "bg-[#121212] text-white border-[#264653]"
+                                        : "bg-white border-gray-300"
+                                    } border focus:outline-none focus:ring-2 focus:ring-[#e76f51]`}
                                     value={eventDetails.time}
                                     onChange={(e) =>
                                       setEventDetails({
@@ -1960,18 +2150,20 @@ export default function Index() {
 
                               <div>
                                 <label
-                                  className={`block text-sm font-medium mb-1 ${darkMode
-                                    ? "text-[#f4a261]"
-                                    : "text-gray-700"
-                                    }`}
+                                  className={`block text-sm font-medium mb-1 ${
+                                    darkMode
+                                      ? "text-[#f4a261]"
+                                      : "text-gray-700"
+                                  }`}
                                 >
                                   Additional Comments
                                 </label>
                                 <textarea
-                                  className={`p-3 w-full rounded-md ${darkMode
-                                    ? "bg-[#121212] text-white border-[#264653]"
-                                    : "bg-white border-gray-300"
-                                    } border focus:outline-none focus:ring-2 focus:ring-[#e76f51]`}
+                                  className={`p-3 w-full rounded-md ${
+                                    darkMode
+                                      ? "bg-[#121212] text-white border-[#264653]"
+                                      : "bg-white border-gray-300"
+                                  } border focus:outline-none focus:ring-2 focus:ring-[#e76f51]`}
                                   rows={3}
                                   placeholder="Any special requests or details about your event..."
                                   value={eventDetails.comments}
@@ -1993,10 +2185,11 @@ export default function Index() {
                                 !eventDetails.date || !eventDetails.time
                               }
                               className={`px-6 py-3 rounded-lg font-medium text-white
-                          ${!eventDetails.date || !eventDetails.time
-                                  ? "bg-gray-400 cursor-not-allowed"
-                                  : "bg-[#e76f51] hover:bg-[#f4a261] cursor-pointer"
-                                }`}
+                          ${
+                            !eventDetails.date || !eventDetails.time
+                              ? "bg-gray-400 cursor-not-allowed"
+                              : "bg-[#e76f51] hover:bg-[#f4a261] cursor-pointer"
+                          }`}
                               whileHover={{ scale: 1.05 }}
                               whileTap={{ scale: 0.95 }}
                             >
@@ -2008,324 +2201,344 @@ export default function Index() {
 
                       {(checkoutStep === 2 ||
                         (checkoutStep === 1 && !hasServices)) && (
-                          <motion.div
-                            key="step2"
-                            initial={{ x: hasServices ? "100%" : 0 }}
-                            animate={{ x: 0 }}
-                            exit={{ x: checkoutStep === 1 ? "-100%" : "100%" }}
-                            transition={{ type: "tween", duration: 0.3 }}
-                            className="p-6"
-                          >
-                            <div>
-                              <div className="space-y-4">
-                                <div>
-                                  <label
-                                    className={`block text-sm font-medium mb-1 ${darkMode
+                        <motion.div
+                          key="step2"
+                          initial={{ x: hasServices ? "100%" : 0 }}
+                          animate={{ x: 0 }}
+                          exit={{ x: checkoutStep === 1 ? "-100%" : "100%" }}
+                          transition={{ type: "tween", duration: 0.3 }}
+                          className="p-6"
+                        >
+                          <div>
+                            <div className="space-y-4">
+                              <div>
+                                <label
+                                  className={`block text-sm font-medium mb-1 ${
+                                    darkMode
                                       ? "text-[#f4a261]"
                                       : "text-gray-700"
-                                      }`}
-                                  >
-                                    Card Number*
-                                  </label>
-                                  <div className="relative">
-                                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                      <FaRegCreditCard
-                                        className={
-                                          darkMode
-                                            ? "text-[#f4a261]"
-                                            : "text-gray-400"
-                                        }
-                                      />
-                                    </div>
-                                    <input
-                                      type="text"
-                                      placeholder="1234 5678 9012 3456"
-                                      className={`pl-10 pr-4 py-2 w-full rounded-md ${darkMode
-                                        ? "bg-[#121212] text-white border-[#264653]"
-                                        : "bg-white border-gray-300"
-                                        } border focus:outline-none focus:ring-2 focus:ring-[#e76f51]`}
-                                      value={creditCardInfo.number}
-                                      onChange={handleCardNumberChange}
-                                      required
+                                  }`}
+                                >
+                                  Card Number*
+                                </label>
+                                <div className="relative">
+                                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <FaRegCreditCard
+                                      className={
+                                        darkMode
+                                          ? "text-[#f4a261]"
+                                          : "text-gray-400"
+                                      }
                                     />
                                   </div>
-                                  {cardErrors.number && (
+                                  <input
+                                    type="text"
+                                    placeholder="1234 5678 9012 3456"
+                                    className={`pl-10 pr-4 py-2 w-full rounded-md ${
+                                      darkMode
+                                        ? "bg-[#121212] text-white border-[#264653]"
+                                        : "bg-white border-gray-300"
+                                    } border focus:outline-none focus:ring-2 focus:ring-[#e76f51]`}
+                                    value={creditCardInfo.number}
+                                    onChange={handleCardNumberChange}
+                                    required
+                                  />
+                                </div>
+                                {cardErrors.number && (
+                                  <p className="mt-1 text-xs text-[#e76f51]">
+                                    {cardErrors.number}
+                                  </p>
+                                )}
+                              </div>
+
+                              <div>
+                                <label
+                                  className={`block text-sm font-medium mb-1 ${
+                                    darkMode
+                                      ? "text-[#f4a261]"
+                                      : "text-gray-700"
+                                  }`}
+                                >
+                                  Cardholder Name*
+                                </label>
+                                <input
+                                  type="text"
+                                  placeholder="John Smith"
+                                  className={`px-4 py-2 w-full rounded-md ${
+                                    darkMode
+                                      ? "bg-[#121212] text-white border-[#264653]"
+                                      : "bg-white border-gray-300"
+                                  } border focus:outline-none focus:ring-2 focus:ring-[#e76f51]`}
+                                  value={creditCardInfo.name}
+                                  onChange={(e) =>
+                                    setCreditCardInfo({
+                                      ...creditCardInfo,
+                                      name: e.target.value,
+                                    })
+                                  }
+                                  required
+                                />
+                              </div>
+
+                              <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                  <label
+                                    className={`block text-sm font-medium mb-1 ${
+                                      darkMode
+                                        ? "text-[#f4a261]"
+                                        : "text-gray-700"
+                                    }`}
+                                  >
+                                    Expiry Date*
+                                  </label>
+                                  <input
+                                    type="text"
+                                    placeholder="MM/YY"
+                                    className={`px-4 py-2 w-full rounded-md ${
+                                      darkMode
+                                        ? "bg-[#121212] text-white border-[#264653]"
+                                        : "bg-white border-gray-300"
+                                    } border focus:outline-none focus:ring-2 focus:ring-[#e76f51]`}
+                                    value={creditCardInfo.expiry}
+                                    onChange={handleExpiryChange}
+                                    required
+                                  />
+                                  {cardErrors.expiry && (
                                     <p className="mt-1 text-xs text-[#e76f51]">
-                                      {cardErrors.number}
+                                      {cardErrors.expiry}
                                     </p>
                                   )}
                                 </div>
 
                                 <div>
                                   <label
-                                    className={`block text-sm font-medium mb-1 ${darkMode
-                                      ? "text-[#f4a261]"
-                                      : "text-gray-700"
-                                      }`}
+                                    className={`block text-sm font-medium mb-1 ${
+                                      darkMode
+                                        ? "text-[#f4a261]"
+                                        : "text-gray-700"
+                                    }`}
                                   >
-                                    Cardholder Name*
+                                    CVC*
                                   </label>
                                   <input
                                     type="text"
-                                    placeholder="John Smith"
-                                    className={`px-4 py-2 w-full rounded-md ${darkMode
+                                    placeholder="123"
+                                    className={`px-4 py-2 w-full rounded-md ${
+                                      darkMode
+                                        ? "bg-[#121212] text-white border-[#264653]"
+                                        : "bg-white border-gray-300"
+                                    } border focus:outline-none focus:ring-2 focus:ring-[#e76f51]`}
+                                    value={creditCardInfo.cvc}
+                                    onChange={handleCVCChange}
+                                    required
+                                  />
+                                  {cardErrors.cvc && (
+                                    <p className="mt-1 text-xs text-[#e76f51]">
+                                      {cardErrors.cvc}
+                                    </p>
+                                  )}
+                                </div>
+                              </div>
+
+                              <div>
+                                <label
+                                  className={`block text-sm font-medium mb-1 ${
+                                    darkMode
+                                      ? "text-[#f4a261]"
+                                      : "text-gray-700"
+                                  }`}
+                                >
+                                  Billing Address*
+                                </label>
+                                <input
+                                  type="text"
+                                  placeholder="123 Party Street"
+                                  className={`px-4 py-2 w-full rounded-md ${
+                                    darkMode
                                       ? "bg-[#121212] text-white border-[#264653]"
                                       : "bg-white border-gray-300"
-                                      } border focus:outline-none focus:ring-2 focus:ring-[#e76f51]`}
-                                    value={creditCardInfo.name}
+                                  } border focus:outline-none focus:ring-2 focus:ring-[#e76f51]`}
+                                  value={creditCardInfo.address}
+                                  onChange={(e) =>
+                                    setCreditCardInfo({
+                                      ...creditCardInfo,
+                                      address: e.target.value,
+                                    })
+                                  }
+                                  required
+                                />
+                              </div>
+
+                              <div className="grid grid-cols-2 gap-4">
+                                <div>
+                                  <label
+                                    className={`block text-sm font-medium mb-1 ${
+                                      darkMode
+                                        ? "text-[#f4a261]"
+                                        : "text-gray-700"
+                                    }`}
+                                  >
+                                    City*
+                                  </label>
+                                  <input
+                                    type="text"
+                                    placeholder="Party City"
+                                    className={`px-4 py-2 w-full rounded-md ${
+                                      darkMode
+                                        ? "bg-[#121212] text-white border-[#264653]"
+                                        : "bg-white border-gray-300"
+                                    } border focus:outline-none focus:ring-2 focus:ring-[#e76f51]`}
+                                    value={creditCardInfo.city}
                                     onChange={(e) =>
                                       setCreditCardInfo({
                                         ...creditCardInfo,
-                                        name: e.target.value,
+                                        city: e.target.value,
                                       })
                                     }
                                     required
                                   />
-                                </div>
-
-                                <div className="grid grid-cols-2 gap-4">
-                                  <div>
-                                    <label
-                                      className={`block text-sm font-medium mb-1 ${darkMode
-                                        ? "text-[#f4a261]"
-                                        : "text-gray-700"
-                                        }`}
-                                    >
-                                      Expiry Date*
-                                    </label>
-                                    <input
-                                      type="text"
-                                      placeholder="MM/YY"
-                                      className={`px-4 py-2 w-full rounded-md ${darkMode
-                                        ? "bg-[#121212] text-white border-[#264653]"
-                                        : "bg-white border-gray-300"
-                                        } border focus:outline-none focus:ring-2 focus:ring-[#e76f51]`}
-                                      value={creditCardInfo.expiry}
-                                      onChange={handleExpiryChange}
-                                      required
-                                    />
-                                    {cardErrors.expiry && (
-                                      <p className="mt-1 text-xs text-[#e76f51]">
-                                        {cardErrors.expiry}
-                                      </p>
-                                    )}
-                                  </div>
-
-                                  <div>
-                                    <label
-                                      className={`block text-sm font-medium mb-1 ${darkMode
-                                        ? "text-[#f4a261]"
-                                        : "text-gray-700"
-                                        }`}
-                                    >
-                                      CVC*
-                                    </label>
-                                    <input
-                                      type="text"
-                                      placeholder="123"
-                                      className={`px-4 py-2 w-full rounded-md ${darkMode
-                                        ? "bg-[#121212] text-white border-[#264653]"
-                                        : "bg-white border-gray-300"
-                                        } border focus:outline-none focus:ring-2 focus:ring-[#e76f51]`}
-                                      value={creditCardInfo.cvc}
-                                      onChange={handleCVCChange}
-                                      required
-                                    />
-                                    {cardErrors.cvc && (
-                                      <p className="mt-1 text-xs text-[#e76f51]">
-                                        {cardErrors.cvc}
-                                      </p>
-                                    )}
-                                  </div>
                                 </div>
 
                                 <div>
                                   <label
-                                    className={`block text-sm font-medium mb-1 ${darkMode
-                                      ? "text-[#f4a261]"
-                                      : "text-gray-700"
-                                      }`}
+                                    className={`block text-sm font-medium mb-1 ${
+                                      darkMode
+                                        ? "text-[#f4a261]"
+                                        : "text-gray-700"
+                                    }`}
                                   >
-                                    Billing Address*
+                                    ZIP Code*
                                   </label>
                                   <input
                                     type="text"
-                                    placeholder="123 Party Street"
-                                    className={`px-4 py-2 w-full rounded-md ${darkMode
-                                      ? "bg-[#121212] text-white border-[#264653]"
-                                      : "bg-white border-gray-300"
-                                      } border focus:outline-none focus:ring-2 focus:ring-[#e76f51]`}
-                                    value={creditCardInfo.address}
+                                    placeholder="12345"
+                                    className={`px-4 py-2 w-full rounded-md ${
+                                      darkMode
+                                        ? "bg-[#121212] text-white border-[#264653]"
+                                        : "bg-white border-gray-300"
+                                    } border focus:outline-none focus:ring-2 focus:ring-[#e76f51]`}
+                                    value={creditCardInfo.zip}
                                     onChange={(e) =>
                                       setCreditCardInfo({
                                         ...creditCardInfo,
-                                        address: e.target.value,
+                                        zip: e.target.value
+                                          .replace(/\D/g, "")
+                                          .slice(0, 5),
                                       })
                                     }
                                     required
                                   />
                                 </div>
-
-                                <div className="grid grid-cols-2 gap-4">
-                                  <div>
-                                    <label
-                                      className={`block text-sm font-medium mb-1 ${darkMode
-                                        ? "text-[#f4a261]"
-                                        : "text-gray-700"
-                                        }`}
-                                    >
-                                      City*
-                                    </label>
-                                    <input
-                                      type="text"
-                                      placeholder="Party City"
-                                      className={`px-4 py-2 w-full rounded-md ${darkMode
-                                        ? "bg-[#121212] text-white border-[#264653]"
-                                        : "bg-white border-gray-300"
-                                        } border focus:outline-none focus:ring-2 focus:ring-[#e76f51]`}
-                                      value={creditCardInfo.city}
-                                      onChange={(e) =>
-                                        setCreditCardInfo({
-                                          ...creditCardInfo,
-                                          city: e.target.value,
-                                        })
-                                      }
-                                      required
-                                    />
-                                  </div>
-
-                                  <div>
-                                    <label
-                                      className={`block text-sm font-medium mb-1 ${darkMode
-                                        ? "text-[#f4a261]"
-                                        : "text-gray-700"
-                                        }`}
-                                    >
-                                      ZIP Code*
-                                    </label>
-                                    <input
-                                      type="text"
-                                      placeholder="12345"
-                                      className={`px-4 py-2 w-full rounded-md ${darkMode
-                                        ? "bg-[#121212] text-white border-[#264653]"
-                                        : "bg-white border-gray-300"
-                                        } border focus:outline-none focus:ring-2 focus:ring-[#e76f51]`}
-                                      value={creditCardInfo.zip}
-                                      onChange={(e) =>
-                                        setCreditCardInfo({
-                                          ...creditCardInfo,
-                                          zip: e.target.value
-                                            .replace(/\D/g, "")
-                                            .slice(0, 5),
-                                        })
-                                      }
-                                      required
-                                    />
-                                  </div>
-                                </div>
                               </div>
                             </div>
+                          </div>
 
-                            <div
-                              className={`mt-8 p-4 rounded-lg ${darkMode ? "bg-[#264653]/20" : "bg-gray-50"
-                                }`}
-                            >
-                              <div className="space-y-2">
-                                {cartItems.map((item) => (
-                                  <div
-                                    key={item.id}
-                                    className="flex justify-between"
-                                  >
-                                    <span
-                                      className={`${darkMode
+                          <div
+                            className={`mt-8 p-4 rounded-lg ${
+                              darkMode ? "bg-[#264653]/20" : "bg-gray-50"
+                            }`}
+                          >
+                            <div className="space-y-2">
+                              {cartItems.map((item) => (
+                                <div
+                                  key={item.id}
+                                  className="flex justify-between"
+                                >
+                                  <span
+                                    className={`${
+                                      darkMode
                                         ? "text-[#f4a261]"
                                         : "text-gray-700"
-                                        }`}
-                                    >
-                                      {item.quantity}x{" "}
-                                      {item.type === "product"
-                                        ? (item.item as Product).name
-                                        : `${(item.item as Service).name} (${(item.item as Service).types.find(
-                                          (t) => t.id === item.selectedType
-                                        )?.name || "Basic"
+                                    }`}
+                                  >
+                                    {item.quantity}x{" "}
+                                    {item.type === "product"
+                                      ? (item.item as Product).name
+                                      : `${(item.item as Service).name} (${
+                                          (item.item as Service).types.find(
+                                            (t) => t.id === item.selectedType
+                                          )?.name || "Basic"
                                         })`}
-                                    </span>
-                                    <span
-                                      className={`font-medium ${darkMode ? "text-white" : "text-[#264653]"
-                                        }`}
-                                    >
-                                      $
-                                      {(
-                                        getItemPrice(item) * item.quantity
-                                      ).toFixed(2)}
-                                    </span>
-                                  </div>
-                                ))}
+                                  </span>
+                                  <span
+                                    className={`font-medium ${
+                                      darkMode ? "text-white" : "text-[#264653]"
+                                    }`}
+                                  >
+                                    $
+                                    {(
+                                      getItemPrice(item) * item.quantity
+                                    ).toFixed(2)}
+                                  </span>
+                                </div>
+                              ))}
 
-                                <div className="border-t border-gray-200 pt-2 mt-2">
-                                  <div className="flex justify-between font-bold">
-                                    <span
-                                      className={
-                                        darkMode ? "text-white" : "text-black"
-                                      }
-                                    >
-                                      Total
-                                    </span>
-                                    <span
-                                      className={`${darkMode
+                              <div className="border-t border-gray-200 pt-2 mt-2">
+                                <div className="flex justify-between font-bold">
+                                  <span
+                                    className={
+                                      darkMode ? "text-white" : "text-black"
+                                    }
+                                  >
+                                    Total
+                                  </span>
+                                  <span
+                                    className={`${
+                                      darkMode
                                         ? "text-[#f4a261]"
                                         : "text-[#e76f51]"
-                                        }`}
-                                    >
-                                      ${getTotalPrice().toFixed(2)}
-                                    </span>
-                                  </div>
+                                    }`}
+                                  >
+                                    ${getTotalPrice().toFixed(2)}
+                                  </span>
                                 </div>
                               </div>
                             </div>
+                          </div>
 
-                            <div className="flex justify-between mt-6">
-                              {hasServices && (
-                                <motion.button
-                                  onClick={() => setCheckoutStep(1)}
-                                  className="px-6 py-3 bg-gray-200 text-gray-800 rounded-lg font-medium cursor-pointer"
-                                  whileHover={{ scale: 1.05 }}
-                                  whileTap={{ scale: 0.95 }}
-                                >
-                                  Back
-                                </motion.button>
-                              )}
+                          <div className="flex justify-between mt-6">
+                            {hasServices && (
                               <motion.button
-                                onClick={placeOrder}
-                                disabled={!isFormValid() || isOrdering}
-                                className={`px-6 py-3 rounded-lg font-medium text-white
-                          ${!isFormValid() || isOrdering
-                                    ? "bg-gray-400 cursor-not-allowed"
-                                    : "bg-[#e76f51] hover:bg-[#f4a261] cursor-pointer"
-                                  }`}
-                                whileHover={
-                                  isFormValid() && !isOrdering
-                                    ? { scale: 1.05 }
-                                    : {}
-                                }
-                                whileTap={
-                                  isFormValid() && !isOrdering
-                                    ? { scale: 0.95 }
-                                    : {}
-                                }
+                                onClick={() => setCheckoutStep(1)}
+                                className="px-6 py-3 bg-gray-200 text-gray-800 rounded-lg font-medium cursor-pointer"
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
                               >
-                                {isOrdering ? (
-                                  <span className="flex items-center gap-2">
-                                    <div className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                                    Processing...
-                                  </span>
-                                ) : (
-                                  "Complete Order"
-                                )}
+                                Back
                               </motion.button>
-                            </div>
-                          </motion.div>
-                        )}
+                            )}
+                            <motion.button
+                              onClick={placeOrder}
+                              disabled={!isFormValid() || isOrdering}
+                              className={`px-6 py-3 rounded-lg font-medium text-white
+                          ${
+                            !isFormValid() || isOrdering
+                              ? "bg-gray-400 cursor-not-allowed"
+                              : "bg-[#e76f51] hover:bg-[#f4a261] cursor-pointer"
+                          }`}
+                              whileHover={
+                                isFormValid() && !isOrdering
+                                  ? { scale: 1.05 }
+                                  : {}
+                              }
+                              whileTap={
+                                isFormValid() && !isOrdering
+                                  ? { scale: 0.95 }
+                                  : {}
+                              }
+                            >
+                              {isOrdering ? (
+                                <span className="flex items-center gap-2">
+                                  <div className="h-4 w-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                                  Processing...
+                                </span>
+                              ) : (
+                                "Complete Order"
+                              )}
+                            </motion.button>
+                          </div>
+                        </motion.div>
+                      )}
 
                       {checkoutStep === 3 && (
                         <motion.div
@@ -2346,15 +2559,17 @@ export default function Index() {
                           </motion.div>
 
                           <h3
-                            className={`text-2xl font-bold ${darkMode ? "text-white" : "text-[#264653]"
-                              } mb-4 text-center`}
+                            className={`text-2xl font-bold ${
+                              darkMode ? "text-white" : "text-[#264653]"
+                            } mb-4 text-center`}
                           >
                             Order Confirmed!
                           </h3>
 
                           <p
-                            className={`${darkMode ? "text-[#f4a261]" : "text-gray-600"
-                              } text-center max-w-md mb-8`}
+                            className={`${
+                              darkMode ? "text-[#f4a261]" : "text-gray-600"
+                            } text-center max-w-md mb-8`}
                           >
                             Thank you for choosing PartyTime. We'll contact you
                             shortly to confirm all the details for your event.
@@ -2406,8 +2621,9 @@ export default function Index() {
             className="fixed inset-0 flex items-center justify-center z-50 pointer-events-none"
           >
             <div
-              className={`${darkMode ? "bg-[#121212]" : "bg-white"
-                } rounded-lg shadow-xl p-6 max-w-md mx-4 text-center`}
+              className={`${
+                darkMode ? "bg-[#121212]" : "bg-white"
+              } rounded-lg shadow-xl p-6 max-w-md mx-4 text-center`}
             >
               <motion.div
                 className="flex flex-col items-center"
@@ -2419,8 +2635,9 @@ export default function Index() {
                   <FaCheck className="h-8 w-8 text-white" />
                 </div>
                 <h3
-                  className={`text-xl font-medium ${darkMode ? "text-white" : "text-[#264653]"
-                    } mb-2`}
+                  className={`text-xl font-medium ${
+                    darkMode ? "text-white" : "text-[#264653]"
+                  } mb-2`}
                 >
                   Your order has been confirmed!
                 </h3>
