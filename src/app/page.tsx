@@ -474,7 +474,7 @@ export default function Index() {
   useEffect(() => {
     const interval = setInterval(() => {
       setTestimonialIndex((prev) => (prev + 1) % mockTestimonials.length);
-    }, 5000);
+    }, 7000);
     return () => clearInterval(interval);
   }, []);
 
@@ -1381,31 +1381,31 @@ export default function Index() {
             {filteredServices.map((service, index) => (
               <motion.div
                 key={service.id + "" + index}
-                className={`rounded-2xl overflow-hidden border transition-all duration-300 ease-in-out 
+                className={`rounded-2xl overflow-hidden border 
                 ${darkMode
                     ? "bg-[#1a1a1a] border-[#264653]/30 hover:shadow-[0_8px_24px_rgba(255,255,255,0.08)]"
                     : "bg-white border-gray-100 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)]"
                   }`}
-                initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
+                initial={{ opacity: 0, x: index % 2 === 0 ? -100 : 100 }}
                 animate={
                   servicesInView
                     ? { opacity: 1, x: 0 }
-                    : { opacity: 0, x: index % 2 === 0 ? -50 : 50 }
+                    : { opacity: 0, x: index % 2 === 0 ? -100 : 100 }
                 }
                 transition={{
-                  duration: 0.5,
-                  delay: 0.1 * index,
+                  duration: 0.5,                  
                 }}
+
               >
-                <div className="md:flex h-full">
-                  <div className="md:w-2/5 h-full">
+                <div className="flex-col md:flex-row md:flex md:h-full">
+                  <div className="md:w-2/5 h-1/3 md:h-full">
                     <img
                       src={service.image}
                       alt={service.name}
                       className="w-full h-full object-cover"
                     />
                   </div>
-                  <div className="p-6 md:w-3/5 flex flex-col justify-between h-full">
+                  <div className="p-6 md:w-3/5 flex flex-col justify-between md:h-full">
                     <div>
                       <div className="flex justify-between items-start mb-4">
                         <h3
@@ -1491,7 +1491,7 @@ export default function Index() {
       </div>
 
       <div
-        className={`py-16 ${darkMode ? "bg-[#121212]" : "bg-white"}`}
+        className={`pb-12 pt-16 ${darkMode ? "bg-[#121212]" : "bg-white"}`}
         id="testimonials"
         ref={testimonialsRef}
       >
@@ -1524,7 +1524,7 @@ export default function Index() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -100 }}
                 transition={{ duration: 0.5 }}
-                className="absolute inset-0 flex items-center justify-center"
+                className="absolute top-0 inset-0 flex items-start justify-center"
               >
                 <div
                   className={`max-w-2xl mx-auto p-8 rounded-xl shadow-lg text-center ${darkMode ? "bg-[#1e1e1e]" : "bg-[#FFF8E7]"
@@ -1570,7 +1570,7 @@ export default function Index() {
               </motion.div>
             </AnimatePresence>
 
-            <div className="absolute bottom-0 left-0 right-0 flex justify-center space-x-2 mt-10">
+            <div className="absolute bottom-5 left-0 right-0 flex justify-center space-x-2 mt-10">
               {mockTestimonials.map((_, index) => (
                 <button
                   key={index}
@@ -1589,7 +1589,7 @@ export default function Index() {
       </div>
 
       <footer
-        className={`${darkMode ? "bg-[#1e1e1e] " : "bg-[#1e1e1e] "}  py-12`}
+        className={`${darkMode ? "bg-[#1e1e1e] " : "bg-[#1e1e1e] "}  pt-12 pb-6`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
