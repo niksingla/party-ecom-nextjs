@@ -1,3 +1,15 @@
+
+# NextJS based E-Commerce Store for party items
+
+This is an **E-Commerce Store designed for selling party items**. It's developed using **Next.js**, **TypeScript**, and **Tailwind CSS**.
+
+
+
+## Live Demo
+
+https://party-goods-ecommerce-nikhil-singlas-projects.vercel.app/
+
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
